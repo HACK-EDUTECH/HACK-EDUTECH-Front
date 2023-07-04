@@ -19,7 +19,7 @@ import "swiper/css/scrollbar";
 
 export default function Step4({ type }) {
     const arr = [1, 2, 3, 4, 5];
-    const completionWord = ["What food do you like the most?           ", "      I really enjoy seafood. It tastes so fresh and delicious             ", "Do you like oysters?                        "];
+    const completionWord = [" What do they taste like?              ", "  They have a unique flavor, some say they're salty and briny.             ", "What about omelets? Do you like them?                      "];
     const [blogTitle, setBlogTitle] = useState('')
     const [count, setCount] = useState(0)
     const [wordCount, setWordCount] = useState(0)
@@ -103,8 +103,8 @@ const handleTyping= ()=>{
                 </SwiperSlide>
                 <SwiperSlide>
                     <WordDiv>
-                        <span>Seafood</span>
-                        <span>해산물</span>
+                        <span>Omelet</span>
+                        <span>오믈렛</span>
                     </WordDiv>
                 </SwiperSlide>
             </Swiper>
@@ -224,9 +224,11 @@ const handleTyping= ()=>{
 }
 
 export const ImgDiv = styled.div`
-    width: 100%;
-    height: 100%;
-    background: url("/wordImage.png") no-repeat;
+    width: 360px;
+    height: 740px;
+    background: url("/오믈렛.png");
+    background-size: cover;
+
 `;
 
 export const WordDiv = styled.div`
@@ -335,7 +337,7 @@ const Div = styled.div`
     line-height: 24px;
     letter-spacing: 0.15px;
 
-    animation: box-ani 5s cubic-bezier(0, 0, 0.97, 0.6) forwards;
+    animation: box-ani 4s cubic-bezier(0, 0, 0.97, 0.6) forwards;
 
     ${".profile"} {
         margin-right: 16px;
@@ -399,7 +401,7 @@ const Div1 = styled.div`
     line-height: 24px;
     letter-spacing: 0.15px;
 
-    animation: box-ani1 15s cubic-bezier(0, 0, 1, 0.07) forwards;
+    animation: box-ani1 13s cubic-bezier(0, 0, 1, 0.07) forwards;
 
     ${".profile"} {
         margin-right: 16px;
@@ -419,14 +421,14 @@ const Div1 = styled.div`
 		opacity: 0;
 	}
     
-	37%{
+	35%{
         opacity: 1;
 
 transform: translate(0, 0);
 
     }
     
-    80%{
+    90%{
         opacity: 1;
 
 transform: translate(0, 0);
@@ -443,6 +445,7 @@ transform: translate(0, 0);
 
 const Div2 = styled.div`
     display: flex;
+    height: 100px;
 
     width: 264px;
     flex-direction: row;
@@ -465,7 +468,7 @@ const Div2 = styled.div`
     line-height: 24px;
     letter-spacing: 0.15px;
 
-    animation: box-ani2 19s cubic-bezier(0, 0, 0.97, 0.6) forwards;
+    animation: box-ani2 18s cubic-bezier(0, 0, 0.97, 0.6) forwards;
 
     ${".profile"} {
         margin-right: 16px;
@@ -485,7 +488,7 @@ const Div2 = styled.div`
 		opacity: 0;
 	}
     
-	75%{
+	70%{
         opacity: 1;
 
 transform: translate(0, 0);
@@ -493,7 +496,7 @@ transform: translate(0, 0);
     }
     
     
-    85%{
+    95%{
         opacity: 1;
 
 transform: translate(0, 0);
@@ -522,11 +525,11 @@ const Girl1 = styled.img`
     width: 260px;
     /* height: ; */
     position: absolute;
-    bottom: 70px;
-    left:200px;
+    bottom: 120px;
+    left:220px;
 
     z-index: 20;
-    animation: fade-in1 15s cubic-bezier(0, 0, 0.6, 0.07) forwards;
+    animation: fade-in1 13s cubic-bezier(0, 0, 0.6, 0.07) forwards;
     @keyframes fade-in1 {
         
     0% {
@@ -537,14 +540,14 @@ const Girl1 = styled.img`
 		opacity: 0;
 	}
     
-	37%{
+	35%{
         opacity: 1;
         transform: translate(-50px, 0);
 
 
     }
     
-    80%{
+    90%{
         opacity: 1;
         transform: translate(-50px, 0);
 
@@ -566,11 +569,11 @@ const Girl2 = styled.img`
     width: 260px;
 
     bottom: 0px;
-    right:200px;
+    right:220px;
     
     z-index: 20;
 
-    animation: fade-in 5s cubic-bezier(0, 0, 0.97, 0.6) forwards;
+    animation: fade-in 4s cubic-bezier(0, 0, 0.97, 0.6) forwards;
     @keyframes fade-in {
         0% {
 		opacity: 0;
@@ -619,7 +622,7 @@ const Girl3 = styled.img`
 		opacity: 0;
 	}
     
-	75%{
+	70%{
         opacity: 1;
 
 transform: translate(0, 0);
@@ -627,7 +630,7 @@ transform: translate(0, 0);
     }
     
     
-    85%{
+    95%{
         opacity: 1;
 
 transform: translate(0, 0);

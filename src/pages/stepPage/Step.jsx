@@ -3,19 +3,14 @@ import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import { useRecoilValue } from 'recoil';
-import { isWordAtom, step1Atom, step2Atom } from '../../atom/atoms.ts';
 
 
 export default function Step({ type }) {
     const navigate = useNavigate();
     const arr = [{title: "기본 암기", comment: "밈을 맞춰보며 모르는 단어 찾기", count:27, newCount:17 }, {title: "예시문 단어맞추기", comment: "예시문을 통해 문법, 문장 학습하기", count:14, newCount:10 }, {title: "외운 단어 복습하기", comment: "카드 맞추기와 시뮬레이션", count:10, newCount:5 },];
-    const step1Word= useRecoilValue(isWordAtom);  // 읽기 전용!
-    const step2Word= useRecoilValue(step2Atom);  // 읽기 전용!
     
-    const count = step1Word.CHAPTER1.STEP2.length
-    const current_count = step1Word.CHAPTER1.STEP1.length
-console.log(current_count);
+    
+
     return (
         <div>
             <Header type={type} />

@@ -2,8 +2,6 @@ import React from "react";
 import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
 
-import { useRecoilValue } from 'recoil';
-import { isWordAtom } from '../../atom/atoms.ts';
 
 
 import { useNavigate } from "react-router-dom";
@@ -11,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 export default function Choice({ type }) {
     const navigate = useNavigate();
 
-    const isWord = useRecoilValue(isWordAtom);
 
     const arr = [
         "You and Me",
@@ -23,7 +20,6 @@ export default function Choice({ type }) {
         "The World of Work",
     ];
 
-    console.log(isWord);
     return (
         <div style={{ backgroundColor: "#F7F7F8" }}>
             <Header type={type} />

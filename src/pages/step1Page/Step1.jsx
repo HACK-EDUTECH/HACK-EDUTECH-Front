@@ -3,14 +3,8 @@ import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import { useRecoilState, 
-    useRecoilValue, 
-    useSetRecoilState, 
-    useResetRecoilState 
-  } from 'recoil';
 
-import { isWordAtom } from '../../atom/atoms.ts';
-import { step1Atom } from '../../atom/atoms.ts';
+
 
 import mix1 from "../../assets/images/디저트.jpeg";
 import mix2 from "../../assets/images/img3.jpeg";
@@ -26,16 +20,8 @@ export default function Step1({ type }) {
     const [imgArr, setImgArr] = useState(mix1);
     const navigate = useNavigate();
     
-    // const isWord = useRecoilValue(isWordAtom);
-    // const counterHandler = useSetRecoilState(isWord);
-    const [isWord, setIsWord] = useRecoilState(isWordAtom); 
-    const [isStep1Word, setIsStep1Word] = useRecoilState(step1Atom); 
-    // useState와 같지만, useRecoilState을 사용하여 다른 파일에 있는 아톰을 읽을 수 있다.
-    const currentWord= useRecoilValue(isWordAtom);  // 읽기 전용!
-    const wordHandler = useSetRecoilState(step1Atom); // 값만 변경 시키기 
-    const resetWord = useResetRecoilState(isWordAtom); // 디폴트값으로 값 변경
-    
-    const dataset = isWord.CHAPTER1.STEP1[0].word_set;
+
+
     const [level, setLevel] = useState(1);
 
     const [checked, setChecked] = useState();
@@ -45,17 +31,12 @@ export default function Step1({ type }) {
     }, [checked]);
 
     const handleChecked = (e) => {
-        let arr=[...isStep1Word]
-        console.log(e.target.innerText); 
-        console.log(isStep1Word);
-        console.log(isWord);
 
         const nodes = [...e.target.parentElement.children];
         arr.pop()
     
         const index = nodes.indexOf(e.target);
         setChecked(index);
-        wordHandler(arr)
 
     };
 

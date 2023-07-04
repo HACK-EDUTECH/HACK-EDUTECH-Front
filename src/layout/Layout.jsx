@@ -14,6 +14,8 @@ export const Wrap = styled.div`
     width: 360px;
 
     height:740px;
+    overflow-y: scroll;
+    overflow-x: hidden;
     /* min-height: 100vh; */
     display: flex;
     margin: 0 auto;
