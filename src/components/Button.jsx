@@ -22,7 +22,7 @@ export const SearchBtn = styled.button`
     flex-direction: row;
     align-items: center;
 
-    &:active {
+    &:hover {
         animation: ${scale} 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
     }
 `;
@@ -46,7 +46,7 @@ export const StartBtn = styled.button`
         color: #ff5555;
     }
 
-    &:active {
+    &:hover {
         animation: ${scale} 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
     }
 `;
@@ -66,7 +66,7 @@ export const LoginBtn = styled.button`
     line-height: 20px;
     letter-spacing: 0.25px;
 
-    &:active {
+    &:hover {
         animation: ${scale} 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
     }
 `;
@@ -91,7 +91,7 @@ export const QuestionBtn = styled.button`
     }
 
 
-    &:active {
+    &:hover {
     background: #ff5656;
     color: #fff;
 

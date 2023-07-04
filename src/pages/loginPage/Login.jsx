@@ -31,7 +31,7 @@ export default function Login() {
             <CustomInp>
                 <img src={lock} alt="" />
                 <input
-                    type="text"
+                    type="password"
                     name=""
                     id=""
                     placeholder="비밀번호를 입력해주세요."

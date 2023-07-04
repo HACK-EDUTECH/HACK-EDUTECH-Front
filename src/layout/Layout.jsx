@@ -12,8 +12,9 @@ export default function Layout({ children }) {
 
 export const Wrap = styled.div`
     width: 360px;
-    height: fit-content;
-    min-height: 100vh;
+
+    height:740px;
+    /* min-height: 100vh; */
     display: flex;
     margin: 0 auto;
     text-align: center;

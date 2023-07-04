@@ -5,12 +5,17 @@ import styled, { keyframes } from "styled-components";
 
 import what from "../../assets/images/whats.svg";
 import arrowDown from "../../assets/images/arrow-down.svg";
+import room1 from "../../assets/images/학교.png";
+import room2 from "../../assets/images/방.png";
+import room3 from "../../assets/images/바다.png";
+import room4 from "../../assets/images/놀이공원.png";
 import { SearchBtn } from "../../components/Button";
 
 export default function Main() {
     const navigate = useNavigate();
 
     const arr = ["중1 영단어 3단원", "중2 사회 6단원", "완료된 기억의 방 "];
+    const imgArr = [room1,room2,room3];
     return (
         <>
             <Cont>
@@ -112,8 +117,11 @@ export default function Main() {
                 <RememberRoom>
                     <h2>최종 기억의 방</h2>
                     <RoomList>
-                        {arr.map((arr) => (
-                            <Room>{arr}</Room>
+                        {arr.map((arr,idx) => (
+                            <Room imgArr={imgArr[idx]}>
+                                <img  alt="" /> 
+                                {arr}
+                            </Room>
                         ))}
                     </RoomList>
                 </RememberRoom>
@@ -183,7 +191,9 @@ export const Room = styled.button`
     width: 128px;
     height: 110px;
     border-radius: 40px;
-    background: url(what), lightgray 50% / cover no-repeat;
+    background: url(${(props) => props.imgArr});
+
+ 
 `;
 
 export const SearchContent = styled.div`

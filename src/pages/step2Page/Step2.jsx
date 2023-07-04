@@ -1,13 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-import mix from "../../assets/images/mix.png";
+import mix from "../../assets/images/비빔밥.jpeg";
 import audio from "../../assets/images/headphones.svg";
 
 import { Pagination, Mousewheel, Keyboard } from "swiper";
 
 import { Swiper, SwiperSlide } from "swiper/react";
+import noImg from "../../assets/images/noImg.svg";
 
 // Import Swiper styles
 import "swiper/css";
@@ -16,16 +18,27 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 export default function Step2({ type }) {
     const arr = [1, 2, 3, 4, 5];
+    const [level, setLevel] = useState(1);
+    const [checked, setChecked] = useState(false);
+    const navigate = useNavigate();
+
+
+
+    const handleOnKeyPress = e => {
+        if (e.key === 'Enter') {
+            console.log(e.target.value)
+            setChecked(true)
+        }
+      };
+
 
     return (
         <Wrap style={{ backgroundColor: "#F7F7F8" }}>
             <Header type={type} />
             <State>
-                {arr.map((a, i) => (
-                    <Rate range={i + 1}></Rate>
-                ))}
+                {level}/14
             </State>
-            <img style={{ width: "280px", height: "280px" }} src={mix} alt="" />
+            <img style={{ width: "280px", height: "280px" ,  borderRadius: "20px"}} src={mix} alt="" />
 
 
        
@@ -48,7 +61,12 @@ export default function Step2({ type }) {
 
         <SwiperSlide>
             <Div>
-                The _____ food in this restaurant is delicious.
+                <p>Korean cuisine is known for its delicious and</p>
+                 
+                <input type="text"   
+
+            onKeyPress={handleOnKeyPress} />
+                 <p>dishes that often incorporate a variety of fresh vegetables and lean proteins.</p> 
                 <img src={audio} alt="" />
             </Div>
         </SwiperSlide>
@@ -59,19 +77,71 @@ export default function Step2({ type }) {
                 </Div>
         </SwiperSlide>
   </Swiper>
-                <SimulBtn>시뮬레이션 해보기 ></SimulBtn>
+                <SimulBtn  onClick={() => { navigate("/step3"); }}>시뮬레이션 해보기 ></SimulBtn>
   </Cont>
-{/* 
-
-            <Div>
-                The _____ food in this restaurant is delicious.
-                <img src={audio} alt="" />
-            </Div>
-            <Div2>시뮬레이션 해보기 ></Div2> */}
+  {checked&&<ContToastFalse >
+                            <img src={noImg} alt="" />
+                            <p> 정답 : Healthy <br />
+                                SAVED!</p>
+                        </ContToastFalse>}
         </Wrap>
     );
 }
 
+
+
+
+export const focusIn =  keyframes`
+        0% {
+        -webkit-transform: scale(0.5);
+                transform: scale(0.5);
+                
+        }
+        22% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+        }
+        90% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+                opacity:100%;
+        
+            }
+
+        100% {
+        -webkit-transform: scale(0.3);
+                transform: scale(0.3);
+                opacity:0%;
+        }
+`
+
+
+export const ContToastFalse = styled.div`
+    width: 203px;
+    height: 203px;
+    background-color: #FF7878;
+    border-radius: 20px;
+    position: absolute;
+    top: 152px;
+    right: 78px;
+
+    text-align: center; 
+    animation: ${focusIn} 2s forwards ;
+
+    ${"img"}{
+        margin: 70px 0 20px;
+    }
+
+    ${"p"}{
+        color: #fff;
+text-align: center;
+font-size: 16px;
+font-family: Noto Sans CJK KR;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+    }
+`
 export const Wrap = styled.div`
     /* margin: 30px 0;
     display: flex;
@@ -123,29 +193,44 @@ export const Btn = styled.button`
 `;
 
 const Div = styled.div`
-    display: flex;
+        display:: inline-block;
 
     position: relative;
 
     width: 251px;
-    margin: 28px auto;
+    margin: 20px auto;
     border-radius: 20px;
     background: #fff;
     padding: 15px;
 
     color: #000;
-    font-size: 18px;
+    font-size: 17px;
     font-family: Noto Sans CJK KR;
     font-style: normal;
     font-weight: 400;
-    line-height: 32px;
+    line-height: 30px;
     letter-spacing: 1.25px;
-    text-transform: uppercase;
     text-align: left;
     align-items: flex-end;
     ${"img"} {
-        margin-bottom: 3px;
+        margin-top: 3px;
+    	vertical-align: top;
+
         cursor: pointer;
+    }
+
+    ${"input"}{
+        display:inline;
+        width: 80px;
+        margin: 0 10px;
+        line-height: 25px;
+        padding: 0 5px;
+        text-align: center;
+        border-bottom: 2px dashed #777B8A;
+    }
+    ${"p"}{
+        display:inline;
+
     }
 `;
 const scale = keyframes` 

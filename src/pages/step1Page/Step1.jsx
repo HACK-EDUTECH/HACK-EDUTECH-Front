@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 import { useRecoilState, 
     useRecoilValue, 
@@ -11,10 +12,20 @@ import { useRecoilState,
 import { isWordAtom } from '../../atom/atoms.ts';
 import { step1Atom } from '../../atom/atoms.ts';
 
-import mix from "../../assets/images/mix.png";
+import mix1 from "../../assets/images/디저트.jpeg";
+import mix2 from "../../assets/images/img3.jpeg";
+import noToast from "../../assets/images/noToast.png";
+import yesToast from "../../assets/images/yesToast.png";
+import yesImg from "../../assets/images/yesImg.svg";
+import arrowRight from "../../assets/images/arrow-right.svg";
+import arrowLeft from "../../assets/images/arrow-left.svg";
 
 export default function Step1({ type }) {
-    const arr = ["MEAT", "CURRY", "RICE", "FRIED", "APPLE"];
+    const arr = [["Piano","Dessert", "Sea", "Bicycle", "Television"],["Chair","Cloud","Book","Shoe", "Meal"] ];
+
+    const [imgArr, setImgArr] = useState(mix1);
+    const navigate = useNavigate();
+    
     // const isWord = useRecoilValue(isWordAtom);
     // const counterHandler = useSetRecoilState(isWord);
     const [isWord, setIsWord] = useRecoilState(isWordAtom); 
@@ -25,17 +36,13 @@ export default function Step1({ type }) {
     const resetWord = useResetRecoilState(isWordAtom); // 디폴트값으로 값 변경
     
     const dataset = isWord.CHAPTER1.STEP1[0].word_set;
-    const level=3;
+    const [level, setLevel] = useState(1);
+
     const [checked, setChecked] = useState();
 
     useEffect(() => {
         // console.log(isStep1Word);
     }, [checked]);
-    
-        
-    const minusCount = () => {
-      };
-    
 
     const handleChecked = (e) => {
         let arr=[...isStep1Word]
@@ -53,25 +60,39 @@ export default function Step1({ type }) {
     };
 
 
+    const handleLevel = (e) => {
+        setChecked();
+        setLevel(level+1);
+        setImgArr(mix2);
+    }
+
     return (
-        <div style={{ backgroundColor: "#F7F7F8" }}>
+        <div style={{ backgroundColor: "#F7F7F8" , position:" relative"}}>
             <Header type={type} />
             <State>
-                {arr.map((a, i) => (
-                    <Rate range={i + 1} level={level}></Rate>
-                ))}
+                {level}/27
             </State>
-            <img src={mix} alt="" />
-            <Word>카레밥</Word>
+            <p style={{ marginBottom: "10px"}}>연관된 단어를 하나 고르세요</p>
+            <img src={imgArr} alt="" style={{width: "212px",height: "212px", borderRadius: "20px"}} />
+
+
             <Div>
-                {arr.map((a, idx) => (
+                {arr[level-1].map((a, idx) => (
                     <Btn idx={idx} checked={checked} onClick={handleChecked}>{a}</Btn>
                 ))}
+                
             </Div>
             <Div2>
-                <button>예시문</button>
+                <button  onClick={() => { navigate("/step2"); }}>예시문</button>
                 <button>시뮬레이션 해보기</button>
             </Div2>
+            <RightBtn src={arrowRight}  onClick={handleLevel}></RightBtn>
+            <LeftBtn src={arrowLeft}  onClick={handleLevel}></LeftBtn>
+
+            {checked&&<ContToastFalse >
+                <img src={yesImg} alt="" />
+                <p>OK!</p>
+            </ContToastFalse>}
         </div>
     );
 }
@@ -128,6 +149,7 @@ export const Btn = styled.button`
     background: #fff;
     height: 48px;
     padding: 15px 0;
+    font-size: 16px;
 
     flex-direction: column;
     justify-content: center;
@@ -139,10 +161,19 @@ export const Btn = styled.button`
     color: ${(props) =>
          props.idx===props.checked ? "#FFF" : "#cf1818"};
 
-    /* &:active{
-    background: #cf1818;
-    color: #fff;
-    } */
+&:hover {
+        animation: scale 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    }
+
+    @keyframes scale{
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(1.05);
+      }
+
+    } 
 `;
 
 const Div = styled.div`
@@ -160,4 +191,112 @@ const Div2 = styled.div`
         padding: 12px 15px;
         margin-right: 20px;
     }
+`;
+
+
+
+export const focusIn =  keyframes`
+        0% {
+        -webkit-transform: scale(0.5);
+                transform: scale(0.5);
+                
+        }
+        22% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+        }
+        80% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+                opacity:100%;
+        
+            }
+
+        100% {
+        -webkit-transform: scale(0.3);
+                transform: scale(0.3);
+                opacity:0%;
+        }
+`
+
+
+export const focusOut =  keyframes`
+        0% {
+        -webkit-transform: scale(0.5);
+                transform: scale(0.5);
+                
+        }
+        22% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+        }
+        70% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+                opacity:100%;
+        
+            }
+
+        100% {
+        -webkit-transform: scale(0);
+                transform: scale(0);
+                opacity:0;
+        }
+`
+
+
+
+export const ContToastFalse = styled.div`
+    width: 203px;
+    height: 203px;
+    background-color: #A3FF78;
+    border-radius: 20px;
+    position: absolute;
+    top: 178px;
+    right: 78px;
+
+    text-align: center; 
+    animation: ${focusIn} 2s forwards ;
+
+    ${"img"}{
+        margin: 70px 0 40px;
+    }
+
+    ${"p"}{
+        color: #000;
+text-align: center;
+font-size: 16px;
+font-family: Noto Sans CJK KR;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+    }
+`
+
+export const ContToastAnswer = styled.div`
+    width: 330px;
+    position: absolute;
+    top: 177px;
+    left: 90px
+    margin: 0 auto;
+    text-align: center; 
+    /* margin: 0 auto; */
+    animation: ${focusOut} 1.5s cubic-bezier(1, 1, 1, 1) alternate;
+    animation-fill-mode: forwards;
+
+`
+
+export const RightBtn = styled.img`
+    position: absolute;
+    top: 250px;
+    right:20px;
+    cursor: pointer;
+`;
+
+export const LeftBtn = styled.img`
+    position: absolute;
+    top: 250px;
+    left:20px;
+    cursor: pointer;
+
 `;

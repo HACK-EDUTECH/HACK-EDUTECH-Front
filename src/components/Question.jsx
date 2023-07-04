@@ -63,6 +63,7 @@ export default function Question() {
                         onChange={handleSelect}
                         value={Selected}
                     >
+                        <option value="none">=== 선택 ===</option>
                         <option>사회</option>
                         <option>영어</option>
                         <option>과학</option>
@@ -80,6 +81,7 @@ export default function Question() {
                             onChange={handleSelect}
                             value={Selected1}
                         >
+                            <option value="none">=== 선택 ===</option>
                             <option>중학교 1학년</option>
                             <option>중학교 2학년</option>
                             <option>중학교 3학년</option>
@@ -148,17 +150,23 @@ export const Wrap = styled.div`
 `;
 
 export const Selete = styled.div`
-urface, #FFF);
+
 width: fit-content;
 box-shadow: 0px 5px 5px 0px #E1E2E7, 0px 3px 14px 0px #E1E2E7, 0px 8px 10px 0px #E1E2E7;
 margin-top: 20px;
 padding: 3px 5px;
 border-radius: 8px;
+${"select"}{
+    cursor: pointer;
+
+}
 `;
 
 export const CheckBox = styled.div`
     display: flex;
     justify-content: space-between;
     margin-top: 41px;
+    ${"label"}{
+    cursor: pointer;}
 `;
 

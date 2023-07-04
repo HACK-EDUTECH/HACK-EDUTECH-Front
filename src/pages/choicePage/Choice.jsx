@@ -32,7 +32,7 @@ export default function Choice({ type }) {
                 {arr.map((x, idx) => (
                     <Cont
                         onClick={() => {
-                            navigate("/step");
+                            navigate("/maderoom");
                         }}
                     >
                         <span>{idx + 1}</span>
@@ -45,9 +45,9 @@ export default function Choice({ type }) {
 }
 
 export const Wrap = styled.div`
-    margin: 0 64px;
+    margin: 0 34px;
     display: grid;
-    gap: 40px;
+    gap: 20px;
     grid-template-columns: 1fr 1fr;
 `;
 
@@ -67,7 +67,7 @@ const scale = keyframes`
 `;
 
 export const Cont = styled.button`
-    width: 96px;
+    width: 126px;
     height: 96px;
     border-radius: 20px;
     background: #fff;
@@ -85,6 +85,8 @@ export const Cont = styled.button`
         font-size: 12px;
         font-family: Roboto;
         line-height: 24px;
+        font-weight: 700;
+
     }
     &:hover {
         animation: ${scale} 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;

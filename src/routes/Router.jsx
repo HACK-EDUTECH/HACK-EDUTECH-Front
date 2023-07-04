@@ -13,6 +13,8 @@ import Step2 from "../pages/step2Page/Step2";
 import Step3 from "../pages/step3Page/Step3";
 import Step4 from "../pages/step4Page/Step4";
 import Drawer from "../pages/drawerPage/Drawer";
+import MadeRoom from "../pages/madeRoomPage/MadeRoom";
+import Setting from "../pages/settingPage/Setting";
 
 
 export default function Router() {
@@ -33,6 +35,8 @@ export default function Router() {
                 <Route path="/step3" element={<Step3 type="step3"/>} />
                 <Route path="/step4" element={<Step4 type="step4"/>} />
                 <Route path="/drawer" element={<Drawer type="drawer"/>} />
+                <Route path="/maderoom" element={<MadeRoom type="maderoom"/>} />
+                <Route path="/setting" element={<Setting type="setting"/>} />
                 
         </Route>
         <Route path="/" element={<Layout />}>
