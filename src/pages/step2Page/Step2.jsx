@@ -11,11 +11,11 @@ import { Pagination, Mousewheel, Keyboard } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import noImg from "../../assets/images/noImg.svg";
 
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
+import 'swiper/swiper-bundle.min.css'
+import 'swiper/swiper.min.css'
+import 'swiper/components/navigation/navigation.min.css'
+import 'swiper/components/pagination/pagination.min.css'
+
 export default function Step2({ type }) {
     const arr = [1, 2, 3, 4, 5];
     const [level, setLevel] = useState(1);

@@ -3,17 +3,6 @@ import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import { Pagination, Mousewheel, Keyboard } from "swiper";
-
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
-
-
 export default function Step3({ type }) {
     const navigate = useNavigate();
 
