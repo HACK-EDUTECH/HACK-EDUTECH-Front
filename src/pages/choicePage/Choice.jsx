@@ -2,8 +2,8 @@ import React from "react";
 import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
 
-
-
+import { ref, child, get } from "firebase/database";
+import { db } from "../../api/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 
 export default function Choice({ type }) {
@@ -19,6 +19,18 @@ export default function Choice({ type }) {
         "Animals Around Us",
         "The World of Work",
     ];
+
+    const readOne = () => {
+        const dbRef = ref(db);
+        get(child(dbRef, "/DATA_TABLE"))
+          .then(snapshot => {
+          if (snapshot.exists()) {
+            console.log(snapshot.val());
+          } else {
+            console.log("No data available");
+          }
+        })
+    }
 
     return (
         <div style={{ backgroundColor: "#F7F7F8" }}>
@@ -36,6 +48,7 @@ export default function Choice({ type }) {
                     </Cont>
                 ))}
             </Wrap>
+            <button onClick={readOne}>dsf</button>
         </div>
     );
 }
