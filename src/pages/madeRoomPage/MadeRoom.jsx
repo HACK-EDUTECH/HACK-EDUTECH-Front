@@ -2,13 +2,14 @@ import React, {useState, useEffect} from "react";
 import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
 import edit from "../../assets/images/edit.svg";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function MadeRoom({ type }) {
   const navigate = useNavigate();
 
   const arr = ["학교", "내 방", "운동장", "도시", "놀이공원"];
   const [checked, setChecked] = useState();
+  const { chapter } = useParams();
 
   
 
@@ -35,7 +36,7 @@ export default function MadeRoom({ type }) {
               <input type="text" placeholder="직접 입력해주세요!"/>
               <img src={edit} alt="" />
             </InpCont>
-            <MadeBtn checked={checked} onClick={() => { navigate("/step"); }}>기억의 방 생성하기</MadeBtn>
+            <MadeBtn checked={checked} onClick={() => { navigate(`/step/${chapter}`); }}>기억의 방 생성하기</MadeBtn>
 
     </Wrap>
   )

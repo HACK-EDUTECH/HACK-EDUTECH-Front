@@ -29,13 +29,13 @@ export default function Router() {
                 <Route path="/main" element={<Main type="main"/>} />
                 <Route path="/search" element={<Search type="search"/>} />
                 <Route path="/choice" element={<Choice type="choice"/>} />
-                <Route path="/step" element={<Step type="step"/>} />
+                <Route path="/step/:chapter" element={<Step type="step"/>} />
                 <Route path="/step1" element={<Step1 type="step1"/>} />
                 <Route path="/step2" element={<Step2 type="step2"/>} />
                 <Route path="/step3" element={<Step3 type="step3"/>} />
                 <Route path="/step4" element={<Step4 type="step4"/>} />
                 <Route path="/drawer" element={<Drawer type="drawer"/>} />
-                <Route path="/maderoom" element={<MadeRoom type="maderoom"/>} />
+                <Route path="/maderoom/:chapter" element={<MadeRoom type="maderoom"/>} />
                 <Route path="/setting" element={<Setting type="setting"/>} />
                 
         </Route>

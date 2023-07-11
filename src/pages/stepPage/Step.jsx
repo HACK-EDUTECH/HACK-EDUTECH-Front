@@ -1,15 +1,55 @@
-import React from "react";
+import React, { useEffect,useState, useCallback } from "react";
 import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { setWord } from "../../count/counterSlice";
+import { setStep1 } from "../../count/step1Slice";
 
-
+import { db } from "../../api/firebaseConfig";
+import { ref, child, get } from "firebase/database";
 
 export default function Step({ type }) {
     const navigate = useNavigate();
     const arr = [{title: "기본 암기", comment: "밈을 맞춰보며 모르는 단어 찾기", count:27, newCount:17 }, {title: "예시문 단어맞추기", comment: "예시문을 통해 문법, 문장 학습하기", count:14, newCount:10 }, {title: "외운 단어 복습하기", comment: "카드 맞추기와 시뮬레이션", count:10, newCount:5 },];
-    
-    
+    // const setWordAtom = useSetRecoilState(isWordAtom);
+    const [ wordList, setWordList ] = useState();
+    const dispatch = useDispatch();
+
+
+    const { chapter } = useParams();
+
+    const readOne = () => {
+        const dbRef = ref(db);
+        get(child(dbRef, `/DATA_TABLE/CHAPTER${chapter}/words`))
+          .then(snapshot => {
+          if (snapshot.exists()) {
+            console.log(snapshot.val());
+
+            console.log(Object.keys(snapshot.val()));
+            const wordArr= Object.keys(snapshot.val())
+            // setWordSelector(snapshot.val())  // B 버튼 1번)
+            setWordList(snapshot.val());
+            dispatch(
+                // setWord({vlaue:snapshot.val(), step1: wordArr})
+                setWord({vlaue:snapshot.val()})
+            );
+            dispatch(
+                setStep1(Object.keys(snapshot.val()))
+            );
+            // console.log(isWord);
+          } else {
+            console.log("No data available");
+          }
+        })
+    }
+
+useEffect(() => {
+    readOne()
+}, [])
+
+ 
+ 
 
     return (
         <div>

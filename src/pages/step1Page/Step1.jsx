@@ -2,7 +2,10 @@ import React, {useState, useEffect} from "react";
 import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
-
+import { shuffle, random } from "lodash";
+import { ref, child, set } from "firebase/database";
+import { useSelector, useDispatch } from "react-redux";
+import noImg from "../../assets/images/noImg.svg";
 
 
 
@@ -13,36 +16,112 @@ import yesToast from "../../assets/images/yesToast.png";
 import yesImg from "../../assets/images/yesImg.svg";
 import arrowRight from "../../assets/images/arrow-right.svg";
 import arrowLeft from "../../assets/images/arrow-left.svg";
+import { imgRef, storage, db } from "../../api/firebaseConfig";
+import {  getDownloadURL,listAll } from "firebase/storage";
+
 
 export default function Step1({ type }) {
     const arr = [["Piano","Dessert", "Sea", "Bicycle", "Television"],["Chair","Cloud","Book","Shoe", "Meal"] ];
+    const [level, setLevel] = useState(0);
+
+    const dispatch = useDispatch();
+    
+    let wordgood = useSelector((state) => state.word.value);
+    const wordReal = useSelector((state) => state.step1.value);
+    const [wordlist,setWordlist] = useState(['ostrich', 'pancake', 'seafood', 'spaghetti','blueberry']);
+
+    const [step2Word,setStep2Word] = useState({});
+    const [checked, setChecked] = useState();
 
     const [imgArr, setImgArr] = useState(mix1);
     const navigate = useNavigate();
     
+    let [toastState, setToastState] = useState(false);
 
-
-    const [level, setLevel] = useState(1);
-
-    const [checked, setChecked] = useState();
+    const [image, setImage] = useState("");
+    // const imageRef = ref(storage, `image/HACK-EDUTECH-0607/chapter3_dessert1.jpg`);
+    
+    getDownloadURL(imgRef)
+    .then((url) => {
+      // `url` is the download URL for 'images/stars.jpg'
+  
+      // This can be downloaded directly:
+      const xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = (event) => {
+        const blob = xhr.response;
+      };
+      xhr.open('GET', url);
+      xhr.send();
+  
+      // Or inserted into an <img> element
+      const img = document.getElementById('myimg');
+      img.setAttribute('src', url);
+    })
+    .catch((error) => {
+      // Handle any errors
+    });
 
     useEffect(() => {
-        // console.log(isStep1Word);
-    }, [checked]);
+        if(level==9){
+            set(ref(db, '/USER_TABLE/HACK-EDUTECH-0607/CHAPTER3/STEP2/words/'), {
+                ...step2Word
+            });
+    
+        }
+    
+    
+    }, [level,step2Word])
+    
+    useEffect(() => {
+        
+        let timer = setTimeout(() => {
+            setToastState(false); // 2초 뒤, toastState가 false가 되면서 알림창이 사라진다
+        }, 2000);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [toastState]);
+
+
 
     const handleChecked = (e) => {
 
         const nodes = [...e.target.parentElement.children];
         arr.pop()
-    
+        const checkWordlist=[...wordlist];
+const checkWord=wordReal[level];
         const index = nodes.indexOf(e.target);
         setChecked(index);
+        setChecked();
+
+        setLevel(level+1);
+        setWordlist(shuffle(wordReal.filter((el, idx) => el !== wordReal[level]).slice(0, 5) , wordReal[level]));
+        console.log(checkWord==checkWordlist[index]);
+        if (checkWord==checkWordlist[index]){
+
+            setToastState("answer"); 
+
+        }else{
+            setToastState("false");
+            const keysOfPerson = Object.values(wordgood);
+
+            const arr =[...keysOfPerson][0]
+            console.log(arr);
+            const k = { [wordReal[level]] : arr[wordReal[level]]}
+            // const key = arr.find((key) => key === wordReal[level]);
+            // const key = arr.map((key,idx) => console.log(key,idx));
+            // setStep2Word({...step2Word,...wordgood.value.wordReal[level]})
+            setStep2Word({...step2Word,...k})
+
+            console.log(arr[wordReal[level]])
+        }
 
     };
 
 
     const handleLevel = (e) => {
-        setChecked();
         setLevel(level+1);
         setImgArr(mix2);
     }
@@ -51,14 +130,14 @@ export default function Step1({ type }) {
         <div style={{ backgroundColor: "#F7F7F8" , position:" relative"}}>
             <Header type={type} />
             <State>
-                {level}/27
+                {level+1}/{wordReal.length}
             </State>
             <p style={{ marginBottom: "10px"}}>연관된 단어를 하나 고르세요</p>
-            <img src={imgArr} alt="" style={{width: "212px",height: "212px", borderRadius: "20px"}} />
+            <img id="myimg" alt="" style={{width: "212px",height: "212px", borderRadius: "20px"}} />
 
 
             <Div>
-                {arr[level-1].map((a, idx) => (
+                {wordlist.map((a, idx) => (
                     <Btn idx={idx} checked={checked} onClick={handleChecked}>{a}</Btn>
                 ))}
                 
@@ -69,11 +148,16 @@ export default function Step1({ type }) {
             </Div2>
             <RightBtn src={arrowRight}  onClick={handleLevel}></RightBtn>
             <LeftBtn src={arrowLeft}  onClick={handleLevel}></LeftBtn>
-
-            {checked&&<ContToastFalse >
-                <img src={yesImg} alt="" />
-                <p>OK!</p>
-            </ContToastFalse>}
+            {toastState==="answer" && <ContToastAnswer >
+                                            <img src={yesImg} alt="" />
+                                            <p>OK!</p>
+                                        </ContToastAnswer>}
+                {toastState==="false" &&  <ContToastFalse >
+                            <img src={noImg} alt="" />
+                            <p> 정답 : Healthy <br />
+                                SAVED!</p>
+                        </ContToastFalse>}
+            
         </div>
     );
 }
@@ -227,24 +311,24 @@ export const focusOut =  keyframes`
 
 
 
-export const ContToastFalse = styled.div`
-    width: 203px;
+export const ContToastAnswer = styled.div`
+ width: 203px;
     height: 203px;
-    background-color: #A3FF78;
+    background-color: green;
     border-radius: 20px;
     position: absolute;
-    top: 178px;
+    top: 152px;
     right: 78px;
 
     text-align: center; 
     animation: ${focusIn} 2s forwards ;
 
     ${"img"}{
-        margin: 70px 0 40px;
+        margin: 70px 0 20px;
     }
 
     ${"p"}{
-        color: #000;
+        color: #fff;
 text-align: center;
 font-size: 16px;
 font-family: Noto Sans CJK KR;
@@ -254,18 +338,35 @@ line-height: normal;
     }
 `
 
-export const ContToastAnswer = styled.div`
-    width: 330px;
-    position: absolute;
-    top: 177px;
-    left: 90px
-    margin: 0 auto;
-    text-align: center; 
-    /* margin: 0 auto; */
-    animation: ${focusOut} 1.5s cubic-bezier(1, 1, 1, 1) alternate;
-    animation-fill-mode: forwards;
 
+
+export const ContToastFalse = styled.div`
+    width: 203px;
+    height: 203px;
+    background-color: #FF7878;
+    border-radius: 20px;
+    position: absolute;
+    top: 152px;
+    right: 78px;
+
+    text-align: center; 
+    animation: ${focusIn} 2s forwards ;
+
+    ${"img"}{
+        margin: 70px 0 20px;
+    }
+
+    ${"p"}{
+        color: #fff;
+text-align: center;
+font-size: 16px;
+font-family: Noto Sans CJK KR;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+    }
 `
+
 
 export const RightBtn = styled.img`
     position: absolute;
