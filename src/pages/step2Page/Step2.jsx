@@ -2,8 +2,18 @@ import React, { useState, useRef, useEffect } from "react";
 import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import seafood from "../../assets/images/HACK-EDUTECH-0607/chapter3_seafood1.jpeg";
+import ostrich from "../../assets/images/HACK-EDUTECH-0607/chapter3_ostrich1.jpeg";
+import topping from "../../assets/images/HACK-EDUTECH-0607/chapter3_topping1.jpeg";
+import omelet from "../../assets/images/HACK-EDUTECH-0607/chapter3_omelet1.jpeg";
+import syrup from "../../assets/images/HACK-EDUTECH-0607/chapter3_syrup1.jpeg";
+import blueberry from "../../assets/images/HACK-EDUTECH-0607/chapter3_blueberry1.jpeg";
+import bacon from "../../assets/images/HACK-EDUTECH-0607/chapter3_bacon1.jpeg";
+import amazing from "../../assets/images/HACK-EDUTECH-0607/chapter3_amazing1.jpeg";
+import healthy from "../../assets/images/HACK-EDUTECH-0607/chapter3_healthy1.jpeg";
+import dessert from "../../assets/images/HACK-EDUTECH-0607/chapter3_dessert1.jpeg";
+import pancake from "../../assets/images/HACK-EDUTECH-0607/chapter3_pancake1.jpeg";
 
-import mix from "../../assets/images/비빔밥.jpeg";
 import audio from "../../assets/images/headphones.svg";
 
 import { Pagination, Mousewheel, Keyboard } from "swiper";
@@ -29,7 +39,20 @@ export default function Step2({ type }) {
     const [checked, setChecked] = useState(false);
     const [inputData, setInputData] = useState();
     let [toastState, setToastState] = useState(false);
-    
+    const [imgArr, setImgArr] = useState({
+        ostrich,
+        blueberry,
+        seafood,
+        pancake,
+        topping,
+        omelet,
+        syrup,
+        bacon,
+        amazing,
+        healthy,
+        dessert
+    }
+    );
     const [answerWord, setAnswerWord] = useState("");
 
     const navigate = useNavigate();
@@ -100,7 +123,7 @@ export default function Step2({ type }) {
                         height: "280px",
                         borderRadius: "20px",
                     }}
-                    src={mix}
+                    src={imgArr[wordReal[level]]}
                     alt=""
                 />
 
