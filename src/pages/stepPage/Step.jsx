@@ -5,16 +5,22 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setWord } from "../../count/counterSlice";
 import { setStep1 } from "../../count/step1Slice";
+import { setStep2 } from "../../count/step2Slice";
 
-import { db } from "../../api/firebaseConfig";
 import { ref, child, get } from "firebase/database";
+import { db } from "../../api/firebaseConfig";
+
 
 export default function Step({ type }) {
     const navigate = useNavigate();
-    const arr = [{title: "기본 암기", comment: "밈을 맞춰보며 모르는 단어 찾기", count:27, newCount:17 }, {title: "예시문 단어맞추기", comment: "예시문을 통해 문법, 문장 학습하기", count:14, newCount:10 }, {title: "외운 단어 복습하기", comment: "카드 맞추기와 시뮬레이션", count:10, newCount:5 },];
-    // const setWordAtom = useSetRecoilState(isWordAtom);
     const [ wordList, setWordList ] = useState();
+    const [ wordStep1, setWordStep1 ] = useState(0);
+    const [ wordStep2, setWordStep2 ] = useState(0);
+    const [ wordStep3, setWordStep3 ] = useState(0);
+    const [ wordStepList, setWordStepList ] = useState([{count:0}, {count:0}, {count:0}]);
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
+    const arr = [{title: "기본 암기", comment: "밈을 맞춰보며 모르는 단어 찾기", count:wordStep2.length, newCount:wordStep1.length }, {title: "예시문 단어맞추기", comment: "예시문을 통해 문법, 문장 학습하기", count:14, newCount:10 }, {title: "외운 단어 복습하기", comment: "카드 맞추기와 시뮬레이션", count:wordStep2.length, newCount:wordStep3.length },];
 
 
     const { chapter } = useParams();
@@ -24,34 +30,71 @@ export default function Step({ type }) {
         get(child(dbRef, `/DATA_TABLE/CHAPTER${chapter}/words`))
           .then(snapshot => {
           if (snapshot.exists()) {
-            console.log(snapshot.val());
+            console.log("0",snapshot.val());
 
-            console.log(Object.keys(snapshot.val()));
-            const wordArr= Object.keys(snapshot.val())
-            // setWordSelector(snapshot.val())  // B 버튼 1번)
-            setWordList(snapshot.val());
+            setWordList(Object.keys(snapshot.val()));
             dispatch(
-                // setWord({vlaue:snapshot.val(), step1: wordArr})
-                setWord({vlaue:snapshot.val()})
+                setWord(snapshot.val())
             );
             dispatch(
                 setStep1(Object.keys(snapshot.val()))
             );
-            // console.log(isWord);
           } else {
             console.log("No data available");
           }
         })
+
+        get(child(dbRef, `/USER_TABLE/HACK-EDUTECH-0607/CHAPTER3/STEP1/`))
+          .then(snapshot => {
+          if (snapshot.exists()) {
+            setWordStep1(snapshot.val());
+            
+            console.log("1",snapshot.val());
+          } else {
+            console.log("No data available");
+          }
+        })
+        
+        get(child(dbRef, `/USER_TABLE/HACK-EDUTECH-0607/CHAPTER3/STEP2/`))
+        .then(snapshot => {
+        if (snapshot.exists()) {
+          setWordStep2(snapshot.val());
+          console.log("2",snapshot.val(), wordStep2);
+
+        } else {
+          setWordStep2(false);
+          console.log("No data available");
+        }
+      })
+
+      get(child(dbRef, `/USER_TABLE/HACK-EDUTECH-0607/CHAPTER3/STEP3/`))
+      .then(snapshot => {
+      if (snapshot.exists()) {
+        setWordStep3(snapshot.val());
+        console.log("3",snapshot.val());
+
+      } else {
+        setWordStep3(false);
+        console.log("No data available");
+      }
+    })
+
     }
 
 useEffect(() => {
     readOne()
+    setIsLoading(true)
+    
 }, [])
 
+useEffect(() => {
+    dispatch(setStep2(wordStep2));
+}, [wordStep2])
  
  
 
     return (
+        isLoading&&
         <div>
             <Header type={type} />
             <Cotainer>
@@ -63,7 +106,7 @@ useEffect(() => {
                 <Wrap>
                     {arr.map((x, idx) => (
                         <>
-                            <Cont onClick={() => { navigate(`/step${idx+1}`);}}>
+                            <Cont onClick={() => { navigate(`/step${idx+1}`);}} wordStep={x.newCount}>
                                 <span>{idx + 1}</span>
                                 <TitleBox>
                                     <h3>{x.title}</h3>
@@ -126,6 +169,8 @@ export const Cont = styled.div`
         line-height: 64px;
         border-radius: 64px;
         background: #fff;
+        color: black;
+
     }
     &:hover { 
         ${"span"} {
@@ -136,6 +181,7 @@ export const Cont = styled.div`
 
     }
 `;
+
 
 export const TitleBox = styled.div`
     width: 100%;

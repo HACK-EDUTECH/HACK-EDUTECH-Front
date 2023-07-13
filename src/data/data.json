@@ -1,0 +1,69 @@
+{
+    "blueberry": {
+        "mean": "블루베리",
+        "sentence": "/muffins are one of my favorite sweet treats to enjoy during breakfast or snack time.",
+        "step1_image": "/image/chapter3_blueberry1.jpg",
+        "step2_image": "/image/chapter3_blueberry1.jpg"
+    },
+    "dessert": {
+        "mean": "디저트",
+        "sentence": "When talking about my favorite food, I always mention the mouthwatering Korean / called 'bingsu'.",
+        "step1_image": "/image/chapter3_dessert1.jpg",
+        "step2_image": "/image/chapter3_dessert1.jpg"
+    },
+    "syrup": {
+        "mean": "시럽",
+        "sentence": "I like to pour maple/ on my pancakes to make them taste even better.",
+        "step1_image": "/image/chapter3_syrup1.jpg",
+        "step2_image": "/image/chapter3_syrup1.jpg"
+    },
+    "topping": {
+        "mean": "토핑",
+        "sentence": "My favorite pizza / is a combination of mushrooms and olives.",
+        "step1_image": "/image/chapter3_topping1.jpg",
+        "step2_image": "/image/chapter3_topping1.jpg"
+    },
+
+    "ostrich": {
+        "mean": "타조",
+        "sentence": "An / is the largest living bird and can run really fast.",
+        "step1_image": "/image/chapter3_ostrich1.jpg",
+        "step2_image": "/image/chapter3_ostrich1.jpg"
+    },
+    "pancake": {
+        "mean": "팬케이크",
+        "sentence": "I absolutely love having /s with syrup for breakfast.",
+        "step1_image": "/image/chapter3_pancake1.jpg",
+        "step2_image": "/image/chapter3_pancake1.jpg"
+    },
+    "seafood": {
+        "mean": "해산물",
+        "sentence": "/ dishes, like shrimp and salmon, are both delicious and nutritious.",
+        "step1_image": "/image/chapter3_seafood1.jpg",
+        "step2_image": "/image/chapter3_seafood1.jpg"
+    },
+    "healthy": {
+        "mean": "건강한",
+        "sentence": "My mom always says that eating a salad with lots of vegetables is a / choice.",
+        "step1_image": "/image/chapter3_healthy1.jpg",
+        "step2_image": "/image/chapter3_healthy1.jpg"
+    },
+    "omelet": {
+        "mean": "오믈렛",
+        "sentence": "My favorite breakfast is a cheese and vegetable/.",
+        "step1_image": "/image/chapter3_omelet1.jpg",
+        "step2_image": "/image/chapter3_omelet1.jpg"
+    },
+    "bacon": {
+        "mean": "베이컨",
+        "sentence": "I love having crispy / with my scrambled eggs for breakfast.",
+        "step1_image": "/image/chapter3_bacon1.jpg",
+        "step2_image": "/image/chapter3_bacon1.jpg"
+    },
+    "amazing": {
+        "mean": "놀라운",
+        "sentence": "The view from the top of the mountain is truly /",
+        "step1_image": "/image/chapter3_amazing1.jpg",
+        "step2_image": "/image/chapter3_amazing1.jpg"
+    }
+}

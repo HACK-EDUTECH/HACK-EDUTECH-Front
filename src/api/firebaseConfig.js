@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getDatabase } from "firebase/database";
-import { getStorage, ref } from "firebase/storage";
+import { getDatabase,ref } from "firebase/database";
+import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -23,4 +23,4 @@ const analytics = getAnalytics(app);
 
 export const db = getDatabase(app);
 export const storage = getStorage(app);
-export const imgRef = ref(storage, `image/HACK-EDUTECH-0607/chapter3_dessert1.jpg`);
+export const refe = ref(db, 'USER_TABLE/HACK-EDUTECH-0607/CHAPTER3/STEP2/');

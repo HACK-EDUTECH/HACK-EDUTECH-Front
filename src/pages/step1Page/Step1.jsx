@@ -1,80 +1,111 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { shuffle, random } from "lodash";
-import { ref, child, set } from "firebase/database";
 import { useSelector, useDispatch } from "react-redux";
+import seafood from "../../assets/images/HACK-EDUTECH-0607/chapter3_seafood1.jpeg";
+import ostrich from "../../assets/images/HACK-EDUTECH-0607/chapter3_ostrich1.jpeg";
+import topping from "../../assets/images/HACK-EDUTECH-0607/chapter3_topping1.jpeg";
+import omelet from "../../assets/images/HACK-EDUTECH-0607/chapter3_omelet1.jpeg";
+import syrup from "../../assets/images/HACK-EDUTECH-0607/chapter3_syrup1.jpeg";
+import blueberry from "../../assets/images/HACK-EDUTECH-0607/chapter3_blueberry1.jpeg";
+import bacon from "../../assets/images/HACK-EDUTECH-0607/chapter3_bacon1.jpeg";
+import amazing from "../../assets/images/HACK-EDUTECH-0607/chapter3_amazing1.jpeg";
+import healthy from "../../assets/images/HACK-EDUTECH-0607/chapter3_healthy1.jpeg";
+import dessert from "../../assets/images/HACK-EDUTECH-0607/chapter3_dessert1.jpeg";
+import pancake from "../../assets/images/HACK-EDUTECH-0607/chapter3_pancake1.jpeg";
+
 import noImg from "../../assets/images/noImg.svg";
-
-
-
-import mix1 from "../../assets/images/디저트.jpeg";
-import mix2 from "../../assets/images/img3.jpeg";
-import noToast from "../../assets/images/noToast.png";
-import yesToast from "../../assets/images/yesToast.png";
 import yesImg from "../../assets/images/yesImg.svg";
 import arrowRight from "../../assets/images/arrow-right.svg";
 import arrowLeft from "../../assets/images/arrow-left.svg";
-import { imgRef, storage, db } from "../../api/firebaseConfig";
-import {  getDownloadURL,listAll } from "firebase/storage";
-
+import { child, set, get } from "firebase/database";
+import { storage, db, refe } from "../../api/firebaseConfig";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
 
 export default function Step1({ type }) {
-    const arr = [["Piano","Dessert", "Sea", "Bicycle", "Television"],["Chair","Cloud","Book","Shoe", "Meal"] ];
+    const arr = [
+        ["Piano", "Dessert", "Sea", "Bicycle", "Television"],
+        ["Chair", "Cloud", "Book", "Shoe", "Meal"],
+    ];
+
+    const [imgArr, setImgArr] = useState({
+        ostrich,
+        blueberry,
+        seafood,
+        pancake,
+        topping,
+        omelet,
+        syrup,
+        bacon,
+        amazing,
+        healthy,
+        dessert
+    }
+    );
+
     const [level, setLevel] = useState(0);
 
     const dispatch = useDispatch();
-    
+
     let wordgood = useSelector((state) => state.word.value);
     const wordReal = useSelector((state) => state.step1.value);
-    const [wordlist,setWordlist] = useState(['ostrich', 'pancake', 'seafood', 'spaghetti','blueberry']);
+    const [wordlist, setWordlist] = useState([
+        "ostrich",
+        "pancake",
+        "seafood",
+        "amazing",
+        "blueberry",
+    ]);
 
-    const [step2Word,setStep2Word] = useState({});
+    const [step2Word, setStep2Word] = useState([]);
     const [checked, setChecked] = useState();
 
-    const [imgArr, setImgArr] = useState(mix1);
     const navigate = useNavigate();
-    
+
     let [toastState, setToastState] = useState(false);
 
     const [image, setImage] = useState("");
     // const imageRef = ref(storage, `image/HACK-EDUTECH-0607/chapter3_dessert1.jpg`);
-    
-    getDownloadURL(imgRef)
-    .then((url) => {
-      // `url` is the download URL for 'images/stars.jpg'
-  
-      // This can be downloaded directly:
-      const xhr = new XMLHttpRequest();
-      xhr.responseType = 'blob';
-      xhr.onload = (event) => {
-        const blob = xhr.response;
-      };
-      xhr.open('GET', url);
-      xhr.send();
-  
-      // Or inserted into an <img> element
-      const img = document.getElementById('myimg');
-      img.setAttribute('src', url);
-    })
-    .catch((error) => {
-      // Handle any errors
-    });
+
+    // const imgRef = ref(
+    //     storage,
+    //     `image/HACK-EDUTECH-0607/chapter3_amazing1.jpg`
+    // );
+
+    // getDownloadURL(imgRef)
+    //     .then((url) => {
+    //         // `url` is the download URL for 'images/stars.jpg'
+
+    //         // This can be downloaded directly:
+    //         const xhr = new XMLHttpRequest();
+    //         xhr.responseType = "blob";
+    //         xhr.onload = (event) => {
+    //             const blob = xhr.response;
+    //         };
+    //         xhr.open("GET", url);
+    //         xhr.send();
+
+    //         // Or inserted into an <img> element
+    //         const img = document.getElementById("myimg");
+    //         img.setAttribute("src", url);
+    //     })
+    //     .catch((error) => {
+    //         // Handle any errors
+    //     });
+
+
+
 
     useEffect(() => {
-        if(level==9){
-            set(ref(db, '/USER_TABLE/HACK-EDUTECH-0607/CHAPTER3/STEP2/words/'), {
-                ...step2Word
-            });
-    
+        if (level == wordReal.length) {
+            // set(refe, step2Word);
+            set(refe, step2Word);
         }
-    
-    
-    }, [level,step2Word])
-    
+    }, [level, step2Word]);
+
     useEffect(() => {
-        
         let timer = setTimeout(() => {
             setToastState(false); // 2초 뒤, toastState가 false가 되면서 알림창이 사라진다
         }, 2000);
@@ -84,80 +115,102 @@ export default function Step1({ type }) {
         };
     }, [toastState]);
 
-
-
     const handleChecked = (e) => {
-
         const nodes = [...e.target.parentElement.children];
-        arr.pop()
-        const checkWordlist=[...wordlist];
-const checkWord=wordReal[level];
+        arr.pop();
+        const checkWordlist = [...wordlist];
+        const checkWord = wordReal[level];
         const index = nodes.indexOf(e.target);
         setChecked(index);
         setChecked();
 
-        setLevel(level+1);
-        setWordlist(shuffle(wordReal.filter((el, idx) => el !== wordReal[level]).slice(0, 5) , wordReal[level]));
-        console.log(checkWord==checkWordlist[index]);
-        if (checkWord==checkWordlist[index]){
-
-            setToastState("answer"); 
-
-        }else{
+        setLevel(level + 1);
+        setWordlist(
+            shuffle(
+                wordReal
+                    .filter((el, idx) => el !== wordReal[level])
+                    .slice(0, 5),
+                wordReal[level]
+            )
+        );
+        console.log(checkWord == checkWordlist[index]);
+        if (checkWord == checkWordlist[index]) {
+            setToastState("answer");
+        } else {
             setToastState("false");
             const keysOfPerson = Object.values(wordgood);
 
-            const arr =[...keysOfPerson][0]
+            const arr = [...keysOfPerson][0];
             console.log(arr);
-            const k = { [wordReal[level]] : arr[wordReal[level]]}
+            // const k = { [wordReal[level]] : arr[wordReal[level]]}
             // const key = arr.find((key) => key === wordReal[level]);
             // const key = arr.map((key,idx) => console.log(key,idx));
             // setStep2Word({...step2Word,...wordgood.value.wordReal[level]})
-            setStep2Word({...step2Word,...k})
-
-            console.log(arr[wordReal[level]])
+            step2Word.push(checkWord);
+            setStep2Word(step2Word);
+            console.log(step2Word);
+            console.log(arr[wordReal[level]]);
         }
-
     };
 
-
     const handleLevel = (e) => {
-        setLevel(level+1);
-        setImgArr(mix2);
-    }
+        setLevel(level + 1);
+        // setImgArr(imgArr[]);
+    };
 
     return (
-        <div style={{ backgroundColor: "#F7F7F8" , position:" relative"}}>
+        <div style={{ backgroundColor: "#F7F7F8", position: " relative" }}>
             <Header type={type} />
             <State>
-                {level+1}/{wordReal.length}
+                {level + 1}/{wordReal.length}
             </State>
-            <p style={{ marginBottom: "10px"}}>연관된 단어를 하나 고르세요</p>
-            <img id="myimg" alt="" style={{width: "212px",height: "212px", borderRadius: "20px"}} />
-
-
+            <p style={{ marginBottom: "10px" }}>연관된 단어를 하나 고르세요</p>
+            <img
+                id="myimg"
+                src={imgArr[wordReal[level]]}
+                alt=""
+                style={{
+                    width: "212px",
+                    height: "212px",
+                    borderRadius: "20px",
+                }}
+            />
+<p>{wordgood[wordReal[level]].mean}</p>
             <Div>
                 {wordlist.map((a, idx) => (
-                    <Btn idx={idx} checked={checked} onClick={handleChecked}>{a}</Btn>
+                    <Btn idx={idx} checked={checked} onClick={handleChecked}>
+                        {a}
+                    </Btn>
                 ))}
-                
             </Div>
             <Div2>
-                <button  onClick={() => { navigate("/step2"); }}>예시문</button>
+                <button
+                    onClick={() => {
+                        navigate("/step2");
+                    }}
+                >
+                    예시문
+                </button>
                 <button>시뮬레이션 해보기</button>
             </Div2>
-            <RightBtn src={arrowRight}  onClick={handleLevel}></RightBtn>
-            <LeftBtn src={arrowLeft}  onClick={handleLevel}></LeftBtn>
-            {toastState==="answer" && <ContToastAnswer >
-                                            <img src={yesImg} alt="" />
-                                            <p>OK!</p>
-                                        </ContToastAnswer>}
-                {toastState==="false" &&  <ContToastFalse >
-                            <img src={noImg} alt="" />
-                            <p> 정답 : Healthy <br />
-                                SAVED!</p>
-                        </ContToastFalse>}
-            
+            <RightBtn src={arrowRight} onClick={handleLevel}></RightBtn>
+            <LeftBtn src={arrowLeft} onClick={handleLevel}></LeftBtn>
+            {toastState === "answer" && (
+                <ContToastAnswer>
+                    <img src={yesImg} alt="" />
+                    <p>OK!</p>
+                </ContToastAnswer>
+            )}
+            {toastState === "false" && (
+                <ContToastFalse>
+                    <img src={noImg} alt="" />
+                    <p>
+                        {" "}
+                        정답 : {wordReal[level-1]} <br />
+                        SAVED!
+                    </p>
+                </ContToastFalse>
+            )}
         </div>
     );
 }
@@ -222,23 +275,21 @@ export const Btn = styled.button`
     color: #cf1818;
     margin: 10px;
     background-color: ${(props) =>
-         props.idx===props.checked ? "#FF5656" : "#FFF"};
-    color: ${(props) =>
-         props.idx===props.checked ? "#FFF" : "#cf1818"};
+        props.idx === props.checked ? "#FF5656" : "#FFF"};
+    color: ${(props) => (props.idx === props.checked ? "#FFF" : "#cf1818")};
 
-&:hover {
+    &:hover {
         animation: scale 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
     }
 
-    @keyframes scale{
-      0% {
-        transform: scale(1);
-      }
-      100% {
-        transform: scale(1.05);
-      }
-
-    } 
+    @keyframes scale {
+        0% {
+            transform: scale(1);
+        }
+        100% {
+            transform: scale(1.05);
+        }
+    }
 `;
 
 const Div = styled.div`
@@ -258,9 +309,7 @@ const Div2 = styled.div`
     }
 `;
 
-
-
-export const focusIn =  keyframes`
+export const focusIn = keyframes`
         0% {
         -webkit-transform: scale(0.5);
                 transform: scale(0.5);
@@ -282,10 +331,9 @@ export const focusIn =  keyframes`
                 transform: scale(0.3);
                 opacity:0%;
         }
-`
+`;
 
-
-export const focusOut =  keyframes`
+export const focusOut = keyframes`
         0% {
         -webkit-transform: scale(0.5);
                 transform: scale(0.5);
@@ -307,12 +355,10 @@ export const focusOut =  keyframes`
                 transform: scale(0);
                 opacity:0;
         }
-`
-
-
+`;
 
 export const ContToastAnswer = styled.div`
- width: 203px;
+    width: 203px;
     height: 203px;
     background-color: green;
     border-radius: 20px;
@@ -320,65 +366,61 @@ export const ContToastAnswer = styled.div`
     top: 152px;
     right: 78px;
 
-    text-align: center; 
-    animation: ${focusIn} 2s forwards ;
+    text-align: center;
+    animation: ${focusIn} 2s forwards;
 
-    ${"img"}{
+    ${"img"} {
         margin: 70px 0 20px;
     }
 
-    ${"p"}{
+    ${"p"} {
         color: #fff;
-text-align: center;
-font-size: 16px;
-font-family: Noto Sans CJK KR;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
+        text-align: center;
+        font-size: 16px;
+        font-family: Noto Sans CJK KR;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
     }
-`
-
-
+`;
 
 export const ContToastFalse = styled.div`
     width: 203px;
     height: 203px;
-    background-color: #FF7878;
+    background-color: #ff7878;
     border-radius: 20px;
     position: absolute;
     top: 152px;
     right: 78px;
 
-    text-align: center; 
-    animation: ${focusIn} 2s forwards ;
+    text-align: center;
+    animation: ${focusIn} 2s forwards;
 
-    ${"img"}{
+    ${"img"} {
         margin: 70px 0 20px;
     }
 
-    ${"p"}{
+    ${"p"} {
         color: #fff;
-text-align: center;
-font-size: 16px;
-font-family: Noto Sans CJK KR;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
+        text-align: center;
+        font-size: 16px;
+        font-family: Noto Sans CJK KR;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
     }
-`
-
+`;
 
 export const RightBtn = styled.img`
     position: absolute;
     top: 250px;
-    right:20px;
+    right: 20px;
     cursor: pointer;
 `;
 
 export const LeftBtn = styled.img`
     position: absolute;
     top: 250px;
-    left:20px;
+    left: 20px;
     cursor: pointer;
-
 `;

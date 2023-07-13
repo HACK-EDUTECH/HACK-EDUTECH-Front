@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Header from "../../components/Header";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -9,89 +9,149 @@ import audio from "../../assets/images/headphones.svg";
 import { Pagination, Mousewheel, Keyboard } from "swiper";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import noImg from "../../assets/images/noImg.svg";
 
-import 'swiper/swiper-bundle.min.css'
-import 'swiper/swiper.min.css'
-import 'swiper/components/navigation/navigation.min.css'
-import 'swiper/components/pagination/pagination.min.css'
+import noImg from "../../assets/images/noImg.svg";
+import yesImg from "../../assets/images/yesImg.svg";
+
+import "swiper/swiper-bundle.min.css";
+import "swiper/swiper.min.css";
+import "swiper/components/navigation/navigation.min.css";
+import "swiper/components/pagination/pagination.min.css";
+import { setStep1 } from "../../count/step1Slice";
+import { setStep2 } from "../../count/step2Slice";
+import { setWord } from "../../count/counterSlice";
+import { shuffle, random } from "lodash";
+
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Step2({ type }) {
-    const arr = [1, 2, 3, 4, 5];
     const [level, setLevel] = useState(1);
     const [checked, setChecked] = useState(false);
+    const [inputData, setInputData] = useState();
+    let [toastState, setToastState] = useState(false);
+    
+    const [answerWord, setAnswerWord] = useState("");
+
     const navigate = useNavigate();
+    const wordReal = useSelector((state) => state.step2.value);
+    const levelCount = useSelector((state) => state.step1.value).length;
+    const [wordlist, setWordlist] = useState(shuffle(wordReal));
+    const inputRef = useRef();
 
+    const [isLoading, setIsLoading] = useState(false);
+    let wordgood = useSelector((state) => state.word.value);
 
+    useEffect(() => {
+        setIsLoading(true);
+        console.log(wordReal);
 
-    const handleOnKeyPress = e => {
-        if (e.key === 'Enter') {
-            console.log(e.target.value)
-            setChecked(true)
+    }, [wordgood]);
+
+    // console.log(wordgood[wordReal[level]].sent);
+
+    console.log(wordgood);
+
+    const handleAnswer = (e) => {
+        // Input을 체크해서 state를 변경하는 함수.
+        setAnswerWord(e.target.value);
+    };
+
+    const handleOnKeyPress = (e) => {
+        if (e.key === "Enter") {
+            console.log(e.target.value);
+            setChecked(true);
+            setLevel(level + 1);
+            setAnswerWord("");
+            console.log(wordReal[level] , e.target.value);
+
+            if (wordReal[level] == e.target.value) {
+                setToastState("answer");
+            } else {
+                setToastState("false");
+            }
         }
-      };
 
+        if(level==wordReal.length){
+            navigate("/step3");
+
+        }
+    };
+
+    useEffect(() => {
+        let timer = setTimeout(() => {
+            setToastState(false); // 2초 뒤, toastState가 false가 되면서 알림창이 사라진다
+        }, 2000);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [toastState]);
 
     return (
-        <Wrap style={{ backgroundColor: "#F7F7F8" }}>
-            <Header type={type} />
-            <State>
-                {level}/14
-            </State>
-            <img style={{ width: "280px", height: "280px" ,  borderRadius: "20px"}} src={mix} alt="" />
+        isLoading && (
+            <Wrap style={{ backgroundColor: "#F7F7F8" }}>
+                <Header type={type} />
+                <State>
+                    {level}/{wordReal.length}
+                </State>
+                <img
+                    style={{
+                        width: "280px",
+                        height: "280px",
+                        borderRadius: "20px",
+                    }}
+                    src={mix}
+                    alt=""
+                />
 
+                <Cont>
+                    <Div>
+                        <p>
+                            {wordgood[wordReal[level]].sentence.split("/")[0]}
+                        </p>
 
-       
-            <Cont>
-        <Swiper
-      direction={'horizontal'} // 슬라이드의 방향을 설정합니다. ( "vertical"/"horizontal" )
-    //   pagination={{ clickable: true }} // dots를 클릭했을 때, 클릭한 슬라이드로 이동하게 됩니다.
-      
-      mousewheel // 마우스 휠 동작을 허용합니다.
-      keyboard // 키보드 방향키에 의한 동작을 허용합니다.
-      modules={[Pagination, Mousewheel, Keyboard]} // 페이지네이션, 마우스휠, 키보드 등을 사용하려면 모듈을 import해줘야 합니다.
-      allowTouchMove // 터치 동작을 허용합니다.
-      className="main_slider"
-      threshold={20} // 터치 감도를 조정합니다. 숫자가 클수록 터치에 반응하지 않습니다.
-      speed={1000} // 슬라이드가 넘어가는 속도를 조정합니다. 단위는 ms입니다.
-      onActiveIndexChange={(swiper) => {
-        console.log(swiper.activeIndex);
-      }}
-    >
-
-        <SwiperSlide>
-            <Div>
-                <p>Korean cuisine is known for its delicious and</p>
-                 
-                <input type="text"   
-
-            onKeyPress={handleOnKeyPress} />
-                 <p>dishes that often incorporate a variety of fresh vegetables and lean proteins.</p> 
-                <img src={audio} alt="" />
-            </Div>
-        </SwiperSlide>
-        <SwiperSlide>
-            <Div>
-                    The _____ food in this restaurant is delicious.
-                    <img src={audio} alt="" />
-                </Div>
-        </SwiperSlide>
-  </Swiper>
-                <SimulBtn  onClick={() => { navigate("/step3"); }}>시뮬레이션 해보기 ></SimulBtn>
-  </Cont>
-  {checked&&<ContToastFalse >
-                            <img src={noImg} alt="" />
-                            <p> 정답 : Healthy <br />
-                                SAVED!</p>
-                        </ContToastFalse>}
-        </Wrap>
+                        <input
+                            type="text"
+                            ref={inputRef}
+                            value={answerWord}
+                            onChange={handleAnswer}
+                            onKeyPress={handleOnKeyPress}
+                        />
+                        <p>
+                            {wordgood[wordReal[level]].sentence.split("/")[1]}
+                        </p>
+                        <img src={audio} alt="" />
+                    </Div>
+                    <SimulBtn
+                        onClick={() => {
+                            navigate("/step3");
+                        }}
+                    >
+                        시뮬레이션 해보기 >
+                    </SimulBtn>
+                </Cont>
+                {toastState === "answer" && (
+                    <ContToastAnswer>
+                        <img src={yesImg} alt="" />
+                        <p>OK!</p>
+                    </ContToastAnswer>
+                )}
+                {toastState === "false" && (
+                    <ContToastFalse>
+                        <img src={noImg} alt="" />
+                        <p>
+                            {" "}
+                            정답 : {wordReal[level - 1]} <br />
+                            SAVED!
+                        </p>
+                    </ContToastFalse>
+                )}
+            </Wrap>
+        )
     );
 }
 
-
-
-
-export const focusIn =  keyframes`
+export const focusIn = keyframes`
         0% {
         -webkit-transform: scale(0.5);
                 transform: scale(0.5);
@@ -113,35 +173,8 @@ export const focusIn =  keyframes`
                 transform: scale(0.3);
                 opacity:0%;
         }
-`
+`;
 
-
-export const ContToastFalse = styled.div`
-    width: 203px;
-    height: 203px;
-    background-color: #FF7878;
-    border-radius: 20px;
-    position: absolute;
-    top: 152px;
-    right: 78px;
-
-    text-align: center; 
-    animation: ${focusIn} 2s forwards ;
-
-    ${"img"}{
-        margin: 70px 0 20px;
-    }
-
-    ${"p"}{
-        color: #fff;
-text-align: center;
-font-size: 16px;
-font-family: Noto Sans CJK KR;
-font-style: normal;
-font-weight: 700;
-line-height: normal;
-    }
-`
 export const Wrap = styled.div`
     /* margin: 30px 0;
     display: flex;
@@ -259,7 +292,6 @@ const SimulBtn = styled.button`
     }
 `;
 
-
 export const Cont = styled.div`
     position: absolute;
 
@@ -267,6 +299,56 @@ export const Cont = styled.div`
     height: 48px;
 `;
 
+export const ContToastAnswer = styled.div`
+    width: 203px;
+    height: 203px;
+    background-color: green;
+    border-radius: 20px;
+    position: absolute;
+    top: 152px;
+    right: 78px;
 
+    text-align: center;
+    animation: ${focusIn} 2s forwards;
 
+    ${"img"} {
+        margin: 70px 0 20px;
+    }
 
+    ${"p"} {
+        color: #fff;
+        text-align: center;
+        font-size: 16px;
+        font-family: Noto Sans CJK KR;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+`;
+
+export const ContToastFalse = styled.div`
+    width: 203px;
+    height: 203px;
+    background-color: #ff7878;
+    border-radius: 20px;
+    position: absolute;
+    top: 152px;
+    right: 78px;
+
+    text-align: center;
+    animation: ${focusIn} 2s forwards;
+
+    ${"img"} {
+        margin: 70px 0 20px;
+    }
+
+    ${"p"} {
+        color: #fff;
+        text-align: center;
+        font-size: 16px;
+        font-family: Noto Sans CJK KR;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+`;

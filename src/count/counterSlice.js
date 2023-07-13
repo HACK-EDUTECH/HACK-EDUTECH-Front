@@ -7,6 +7,7 @@ export const wordSlice = createSlice({
         setWord: (state, action) => {
             state.value = action.payload
         },
+
     },
 });
 
