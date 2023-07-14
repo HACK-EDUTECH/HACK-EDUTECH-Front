@@ -26,7 +26,7 @@ export default function Step3({ type }) {
 export const ImgDiv = styled.div`
     width: 360px;
     height: 740px;
-    background: url("/놀이공원.png")  center  ;
+    background: url("./놀이공원.png")  center  ;
     background-size: cover;
     background-position: -140px;
 `;
